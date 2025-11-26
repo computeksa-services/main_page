@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Servicio - Cableado Estructurado.</title>
+    <title>Solicitud de Servicio - Cableado Estructurado</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
@@ -32,12 +32,29 @@
             overflow: hidden;
         }
 
+        /* Estilos del Logo */
+        .logo-container {
+            background-color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo-container img {
+            max-width: 100%; /* Para que no se salga en celulares */
+            width: 300px;    /* Tamaño controlado y estético */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
         .banner {
             width: 100%;
             background: linear-gradient(90deg, #1565C0, #1E88E5);
             color: white;
             padding: 25px;
             text-align: center;
+            box-sizing: border-box;
         }
 
         .banner h2 {
@@ -64,6 +81,7 @@
         h1 {
             color: var(--primary-color);
             margin: 0;
+            font-size: 24px;
         }
 
         p.subtitle {
@@ -79,6 +97,8 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
+            font-size: 14px;
+            color: #444;
         }
 
         input, select, textarea {
@@ -87,6 +107,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
+            box-sizing: border-box;
         }
 
         textarea {
@@ -114,11 +135,17 @@
             font-size: 16px;
             font-weight: bold;
             margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
         button:hover {
             background-color: var(--primary-dark);
-            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
 
         .footer-note {
@@ -130,11 +157,21 @@
         }
 
         .hidden { display: none; }
+        
+        #successMessage {
+            text-align: center;
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+
+    <!-- LOGO AÑADIDO AQUÍ -->
+    <div class="logo-container">
+        <img src="logo_computeksa_large.png" alt="Logo Computeksa">
+    </div>
 
     <div class="banner">
         <h2>Solicitud de Ticket - Cableado Estructurado</h2>
@@ -142,11 +179,6 @@
     </div>
 
     <div class="content">
-
-        <header>
-            <h1>Solicitud de Servicio</h1>
-            <p class="subtitle">Complete la información solicitada</p>
-        </header>
 
         <form id="serviceForm">
 
@@ -221,37 +253,83 @@
                 </select>
             </div>
 
-            <button type="submit">ENVIAR SOLICITUD</button>
+            <button type="submit" id="btnEnviar">ENVIAR SOLICITUD</button>
 
             <div class="footer-note">
-                Este formulario se creó en COMPUTEKSA S.A. - Contactar con el propietario del formulario
+                Este formulario se creó en COMPUTEKSA S.A.
             </div>
 
         </form>
 
         <div id="successMessage" class="hidden">
-            <span style="font-size:45px;">✅</span>
+            <span style="font-size:50px;">✅</span>
             <h2>¡Solicitud Enviada!</h2>
             <p>Hemos recibido su requerimiento correctamente.</p>
+            <button onclick="location.reload()" style="background-color:#777; width:auto; padding:10px 20px; margin-top:15px; color:white; border:none; border-radius:5px; cursor:pointer;">Nueva solicitud</button>
         </div>
 
     </div>
 </div>
 
 <script>
+    // ======================================================
+    // PEGA AQUÍ ABAJO LA URL DE TU WEBHOOK DE N8N
+    // ======================================================
+    const WEBHOOK_URL = 'https://service.computeksa.com/webhook/formulario'; 
+    // ======================================================
+
     const form = document.getElementById('serviceForm');
     const successMsg = document.getElementById('successMessage');
+    const btn = document.getElementById('btnEnviar');
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.classList.add('hidden');
-        successMsg.classList.remove('hidden');
-        window.scrollTo(0,0);
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Evita que se envíe solo
+
+        // --- NUEVA CONFIRMACIÓN ---
+        const userConfirmed = confirm("¿Está seguro de que desea enviar la solicitud?");
+        if (!userConfirmed) {
+            return; // Si dice Cancelar, se detiene aquí y no envía nada
+        }
+        // --------------------------
+        
+        // Cambiar botón para mostrar carga
+        btn.textContent = 'Enviando...';
+        btn.disabled = true;
+
+        // Capturar los datos
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Agregar fecha automática de registro
+        data.fecha_registro = new Date().toLocaleString();
+
+        try {
+            // Enviar a n8n
+            const response = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                // Si todo salió bien
+                form.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+                window.scrollTo(0,0);
+            } else {
+                throw new Error('Error en la respuesta del servidor');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Hubo un problema al conectar con el servidor. Por favor intente nuevamente.');
+            btn.textContent = 'ENVIAR SOLICITUD';
+            btn.disabled = false;
+        }
     });
 </script>
 
 </body>
 </html>
-
-
-
