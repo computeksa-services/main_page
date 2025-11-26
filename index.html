@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Servicio - Cableado Estructurado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #1E88E5;
+            --primary-dark: #1565C0;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .banner {
+            width: 100%;
+            background: linear-gradient(90deg, #1565C0, #1E88E5);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .banner h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .banner p {
+            margin-top: 5px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        p.subtitle {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            cursor: pointer;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+            opacity: 0.85;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="banner">
+        <h2>Solicitud de Ticket - Cableado Estructurado</h2>
+        <p>Registre su requerimiento técnico.</p>
+    </div>
+
+    <div class="content">
+
+        <header>
+            <h1>Solicitud de Servicio</h1>
+            <p class="subtitle">Complete la información solicitada</p>
+        </header>
+
+        <form id="serviceForm">
+
+            <div class="form-group">
+                <label>Área Solicitante</label>
+                <input type="text" name="area_solicitante" required placeholder="Ejemplo: Contabilidad, Bodega, TI">
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Servicio</label>
+                <select name="tipo_servicio" required>
+                    <option value="">Seleccione el tipo de servicio...</option>
+                    <option>Instalación</option>
+                    <option>Reubicación</option>
+                    <option>Certificación</option>
+                    <option>Mantenimiento</option>
+                    <option>Tendido</option>
+                    <option>Etiquetado</option>
+                    <option>Reparación</option>
+                    <option>Arreglo</option>
+                    <option>Configuración</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre del Contacto</label>
+                <input type="text" name="nombre_contacto" required placeholder="Ejemplo: Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label>Móvil del Contacto</label>
+                <input type="tel" name="movil_contacto" required pattern="^09[0-9]{8}$" maxlength="10" placeholder="Ejemplo: 0998765432">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fecha sugerida para la inspección</label>
+                    <input type="date" name="fecha_sugerida" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Hora sugerida para la inspección</label>
+                    <input type="time" name="hora_sugerida" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Detalle del requerimiento</label>
+                <textarea name="detalle_requerimiento" rows="4" required placeholder="Describa detalladamente el requerimiento o falla..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Restricciones</label>
+                <select name="restricciones" required>
+                    <option value="">Seleccione una restricción...</option>
+                    <option>Horarios permitidos para trabajo</option>
+                    <option>Áreas con restricciones</option>
+                    <option>Protocolo de bioseguridad requeridos</option>
+                    <option>Requisitos adicionales para ingreso del personal técnico</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Nivel de servicio</label>
+                <select name="nivel_servicio" required>
+                    <option value="">Seleccione el nivel de servicio...</option>
+                    <option>Alta (respuesta 2h, resolución 4h)</option>
+                    <option>Medio (respuesta 8h, resolución 24h)</option>
+                    <option>Bajo (respuesta NBD, resolución 48h)</option>
+                </select>
+            </div>
+
+            <button type="submit">ENVIAR SOLICITUD</button>
+
+            <div class="footer-note">
+                Este formulario se creó en COMPUTEKSA S.A. - Contactar con el propietario del formulario
+            </div>
+
+        </form>
+
+        <div id="successMessage" class="hidden">
+            <span style="font-size:45px;">✅</span>
+            <h2>¡Solicitud Enviada!</h2>
+            <p>Hemos recibido su requerimiento correctamente.</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('serviceForm');
+    const successMsg = document.getElementById('successMessage');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.classList.add('hidden');
+        successMsg.classList.remove('hidden');
+        window.scrollTo(0,0);
+    });
+</script>
+
+</body>
+</html>
+
