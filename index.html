@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Servicio - Computeksa</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1E88E5; /* Color de tu empresa */
+            --primary-dark: #1565C0;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary-color);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 24px;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            background-color: #e3f2fd;
+            color: var(--primary-dark);
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 500;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .hidden { display: none; }
+
+        #successMessage {
+            text-align: center;
+            padding: 40px;
+            color: #2e7d32;
+        }
+        
+        .success-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <!-- Puedes poner <img src="logo.png" width="150"> aquí si subes un logo -->
+        <h1>Solicitud de Servicio Técnico</h1>
+        <p class="subtitle">Complete el formulario para programar una inspección</p>
+    </header>
+
+    <form id="serviceForm">
+        
+        <!-- DATOS DEL SOLICITANTE (Sugeridos) -->
+        <div class="section-title">Datos del Solicitante</div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="required">Nombre Completo</label>
+                <input type="text" name="solicitante_nombre" required placeholder="Ej: Juan Pérez">
+            </div>
+            <div class="form-group">
+                <label class="required">Correo Electrónico</label>
+                <input type="email" name="solicitante_email" required placeholder="nombre@empresa.com">
+            </div>
+        </div>
+
+        <!-- DETALLE DEL SERVICIO -->
+        <div class="section-title">Detalle del Servicio</div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="required">Área Solicitante</label>
+                <input type="text" name="area_solicitante" required placeholder="Ej: Recursos Humanos, TI, Ventas">
+            </div>
+            <div class="form-group">
+                <label class="required">Tipo de Servicio</label>
+                <select name="tipo_servicio" required>
+                    <option value="">Seleccione una opción...</option>
+                    <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+                    <option value="Mantenimiento Correctivo">Mantenimiento Correctivo</option>
+                    <option value="Instalación">Instalación / Implementación</option>
+                    <option value="Inspección">Inspección Técnica</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="required">Fecha sugerida</label>
+                <input type="date" name="fecha_sugerida" required>
+            </div>
+            <div class="form-group">
+                <label class="required">Hora sugerida</label>
+                <input type="time" name="hora_sugerida" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="required">Detalle del Requerimiento</label>
+            <textarea name="detalle_requerimiento" rows="4" required placeholder="Describa brevemente el problema o necesidad..."></textarea>
+        </div>
+
+        <!-- RESTRICCIONES Y PROTOCOLOS -->
+        <div class="section-title">Restricciones y Protocolos</div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="required">Horarios permitidos para trabajo</label>
+                <input type="text" name="restriccion_horarios" required placeholder="Ej: Lunes a Viernes 8:00 - 17:00">
+            </div>
+            <div class="form-group">
+                <label>Áreas con restricciones</label>
+                <input type="text" name="restriccion_areas" placeholder="Ej: Cuarto de servidores, Archivo">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Protocolo de bioseguridad requerido</label>
+            <input type="text" name="protocolo_bioseguridad" placeholder="Ej: Uso de mascarilla, Carnet de vacunación">
+        </div>
+        <div class="form-group">
+            <label>Requisitos adicionales ingreso personal</label>
+            <input type="text" name="requisitos_ingreso" placeholder="Ej: Cédula, Seguro social, Casco">
+        </div>
+        <div class="form-group">
+            <label>Otros requisitos</label>
+            <input type="text" name="otros_requisitos">
+        </div>
+
+        <!-- NIVEL DE SERVICIO -->
+        <div class="section-title">Nivel de Servicio y Prioridad</div>
+        <div class="form-group">
+            <label class="required">Seleccione el Nivel de Servicio (SLA)</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="nivel_servicio" value="Alta" required> 
+                    <strong>Alta:</strong> Respuesta 2 horas, resolución en 4 horas.
+                </label>
+                <label>
+                    <input type="radio" name="nivel_servicio" value="Medio"> 
+                    <strong>Medio:</strong> Respuesta 8 horas, resolución en 24 horas.
+                </label>
+                <label>
+                    <input type="radio" name="nivel_servicio" value="Bajo"> 
+                    <strong>Bajo:</strong> Respuesta NBD, resolución en 48 horas.
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Observaciones Adicionales</label>
+            <textarea name="observaciones" rows="2"></textarea>
+        </div>
+
+        <button type="submit" id="btnEnviar">ENVIAR SOLICITUD</button>
+    </form>
+
+    <!-- MENSAJE DE ÉXITO -->
+    <div id="successMessage" class="hidden">
+        <span class="success-icon">✅</span>
+        <h2>¡Solicitud Enviada!</h2>
+        <p>Hemos recibido su requerimiento correctamente. Nuestro equipo técnico analizará la solicitud.</p>
+        <button onclick="location.reload()" style="background-color: #666; width: auto; padding: 10px 30px;">Enviar nueva solicitud</button>
+    </div>
+
+</div>
+
+<script>
+    // ==========================================
+    // CONFIGURACIÓN: PEGA AQUÍ TU URL DE N8N
+    // ==========================================
+    const WEBHOOK_URL = 'https://service.computeksa.com/webhook/contacto'; 
+    // ==========================================
+
+    const form = document.getElementById('serviceForm');
+    const successMsg = document.getElementById('successMessage');
+    const btn = document.getElementById('btnEnviar');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Efecto visual de carga
+        btn.innerHTML = 'Enviando... ⏳';
+        btn.disabled = true;
+
+        // Capturar datos
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Agregar fecha de envío automática
+        data.fecha_envio = new Date().toLocaleString();
+
+        try {
+            const response = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                // Éxito
+                form.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+                window.scrollTo(0,0);
+            } else {
+                throw new Error('Error en el servidor');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Hubo un error al enviar la solicitud. Por favor verifique su conexión.');
+            btn.innerHTML = 'ENVIAR SOLICITUD';
+            btn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
