@@ -23,6 +23,40 @@
             line-height: 1.6;
         }
 
+        /* Header Navigation */
+        .main-header {
+            background-color: #f8f9fa; /* Un color claro y limpio */
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 45px;
+        }
+        .main-nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .main-nav a:hover {
+            color: var(--primary-color);
+        }
+
         /* Hero Section (Portada) */
         .hero {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
@@ -110,10 +144,18 @@
 </head>
 <body>
 
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/"><img src="logo_computeksa_large.png" alt="Computeksa Logo"></a>
+            </div>
+        </div>
+    </header>
+
     <!-- PORTADA PRINCIPAL -->
     <div class="hero">
-        <h1>Bienvenido a Computeksa</h1>
-        <p>Expertos en automatización, soporte técnico e infraestructura tecnológica. Estamos listos para ayudarte.</p>
+        <h1>Tu aliado estratégico en soluciones IT y soporte técnico</h1>
+        <p>Expertos en servicios de TI, automatizaciones y más. Con presencia en Ecuador, LATAM y EE.UU.</p>
         
         <!-- Contenedor para los botones -->
         <div class="button-container" style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
