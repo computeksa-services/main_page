@@ -3,333 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Servicio - Cableado Estructurado</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-
+    <title>Dashboard de Requerimientos</title>
     <style>
-        :root {
-            --primary-color: #1E88E5;
-            --primary-dark: #1565C0;
-            --bg-color: #f4f7f6;
-            --text-color: #333;
-        }
-
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
         }
-
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: white;
-            padding: 0;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        /* Estilos del Logo */
-        .logo-container {
-            background-color: white;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .logo-container img {
-            max-width: 100%; /* Para que no se salga en celulares */
-            width: 300px;    /* Tamaño controlado y estético */
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .banner {
-            width: 100%;
-            background: linear-gradient(90deg, #1565C0, #1E88E5);
-            color: white;
-            padding: 25px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .banner h2 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .banner p {
-            margin-top: 5px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         h1 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 24px;
+            color: #333;
         }
-
-        p.subtitle {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            font-size: 14px;
-            color: #444;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
+        #addButton {
+            background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
             font-size: 16px;
-            font-weight: bold;
-            margin-top: 20px;
+            margin-bottom: 20px;
             cursor: pointer;
-            transition: background 0.3s;
+            border-radius: 5px;
+            border: none;
         }
-
-        button:hover {
-            background-color: var(--primary-dark);
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background-color: #fff;
         }
-
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
-
-        .footer-note {
-            margin-top: 20px;
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tbody tr {
+            cursor: pointer;
+        }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #loading {
             text-align: center;
-            font-size: 13px;
-            color: #555;
-            opacity: 0.85;
-        }
-
-        .hidden { display: none; }
-        
-        #successMessage {
-            text-align: center;
-            padding: 40px;
+            padding: 20px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+    <h1>Dashboard de Requerimientos</h1>
+    <a href="form.html" id="addButton">Añadir Requerimiento</a>
 
-    <!-- LOGO AÑADIDO AQUÍ -->
-    <div class="logo-container">
-        <img src="logo_computeksa_large.png" alt="Logo Computeksa">
-    </div>
+    <table id="reqTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Área</th>
+                <th>Tipo de Servicio</th>
+                <th>Estado</th>
+                <th>Fecha de Creación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+    <div id="loading">Cargando requerimientos...</div>
 
-    <div class="banner">
-        <h2>Solicitud de Ticket - Cableado Estructurado</h2>
-        <p>Registre su requerimiento técnico.</p>
-    </div>
-
-    <div class="content">
-
-        <form id="serviceForm">
-
-            <div class="form-group">
-                <label>Área Solicitante</label>
-                <input type="text" name="area_solicitante" required placeholder="Ejemplo: Contabilidad, Bodega, TI">
-            </div>
-
-            <div class="form-group">
-                <label>Tipo de Servicio</label>
-                <select name="tipo_servicio" required>
-                    <option value="">Seleccione el tipo de servicio...</option>
-                    <option>Instalación</option>
-                    <option>Reubicación</option>
-                    <option>Certificación</option>
-                    <option>Mantenimiento</option>
-                    <option>Tendido</option>
-                    <option>Etiquetado</option>
-                    <option>Reparación</option>
-                    <option>Arreglo</option>
-                    <option>Configuración</option>
-                    <option>Otro</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Nombre del Contacto</label>
-                <input type="text" name="nombre_contacto" required placeholder="Ejemplo: Juan Pérez">
-            </div>
-
-            <div class="form-group">
-                <label>Móvil del Contacto</label>
-                <input type="tel" name="movil_contacto" required pattern="^09[0-9]{8}$" maxlength="10" placeholder="Ejemplo: 0998765432">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Fecha sugerida para la inspección</label>
-                    <input type="date" name="fecha_sugerida" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Hora sugerida para la inspección</label>
-                    <input type="time" name="hora_sugerida" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Detalle del requerimiento</label>
-                <textarea name="detalle_requerimiento" rows="4" required placeholder="Describa detalladamente el requerimiento o falla..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Restricciones</label>
-                <select name="restricciones" required>
-                    <option value="">Seleccione una restricción...</option>
-                    <option>Horarios permitidos para trabajo</option>
-                    <option>Áreas con restricciones</option>
-                    <option>Protocolo de bioseguridad requeridos</option>
-                    <option>Requisitos adicionales para ingreso del personal técnico</option>
-                    <option>Otro</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Nivel de servicio</label>
-                <select name="nivel_servicio" required>
-                    <option value="">Seleccione el nivel de servicio...</option>
-                    <option>Alta (respuesta 2h, resolución 4h)</option>
-                    <option>Medio (respuesta 8h, resolución 24h)</option>
-                    <option>Bajo (respuesta NBD, resolución 48h)</option>
-                </select>
-            </div>
-
-            <button type="submit" id="btnEnviar">ENVIAR SOLICITUD</button>
-
-            <div class="footer-note">
-                Este formulario se creó en COMPUTEKSA S.A.
-            </div>
-
-        </form>
-
-        <div id="successMessage" class="hidden">
-            <span style="font-size:50px;">✅</span>
-            <h2>¡Solicitud Enviada!</h2>
-            <p>Hemos recibido su requerimiento correctamente.</p>
-            <button onclick="location.reload()" style="background-color:#777; width:auto; padding:10px 20px; margin-top:15px; color:white; border:none; border-radius:5px; cursor:pointer;">Nueva solicitud</button>
+    <!-- The Modal -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Detalles del Requerimiento</h2>
+            <div id="modal-body"></div>
         </div>
-
     </div>
-</div>
 
-<script>
-    // ======================================================
-    // PEGA AQUÍ ABAJO LA URL DE TU WEBHOOK DE N8N
-    // ======================================================
-    const WEBHOOK_URL = 'https://service.computeksa.com/webhook/formulario'; 
-    // ======================================================
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const webhookUrl = 'https://service.computeksa.com/webhook/req';
+            const tableBody = document.querySelector('#reqTable tbody');
+            const loadingIndicator = document.getElementById('loading');
+            const modal = document.getElementById('detailsModal');
+            const modalBody = document.getElementById('modal-body');
+            const closeModal = document.querySelector('.close');
 
-    const form = document.getElementById('serviceForm');
-    const successMsg = document.getElementById('successMessage');
-    const btn = document.getElementById('btnEnviar');
+            let requirementsData = [];
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita que se envíe solo
-
-        // --- NUEVA CONFIRMACIÓN ---
-        const userConfirmed = confirm("¿Está seguro de que desea enviar la solicitud?");
-        if (!userConfirmed) {
-            return; // Si dice Cancelar, se detiene aquí y no envía nada
-        }
-        // --------------------------
-        
-        // Cambiar botón para mostrar carga
-        btn.textContent = 'Enviando...';
-        btn.disabled = true;
-
-        // Capturar los datos
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        
-        // Agregar fecha automática de registro
-        data.fecha_registro = new Date().toLocaleString();
-
-        try {
-            // Enviar a n8n
-            const response = await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (response.ok) {
-                // Si todo salió bien
-                form.classList.add('hidden');
-                successMsg.classList.remove('hidden');
-                window.scrollTo(0,0);
-            } else {
-                throw new Error('Error en la respuesta del servidor');
+            async function fetchRequirements() {
+                try {
+                    const response = await fetch(webhookUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    requirementsData = await response.json();
+                    displayRequirements(requirementsData);
+                } catch (error) {
+                    console.error('Error fetching requirements:', error);
+                    tableBody.innerHTML = `<tr><td colspan="6">Error al cargar los datos. Por favor, intente más tarde.</td></tr>`;
+                } finally {
+                    loadingIndicator.style.display = 'none';
+                }
             }
 
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Hubo un problema al conectar con el servidor. Por favor intente nuevamente.');
-            btn.textContent = 'ENVIAR SOLICITUD';
-            btn.disabled = false;
-        }
-    });
-</script>
+            function displayRequirements(requirements) {
+                tableBody.innerHTML = '';
+                if (requirements.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6">No se encontraron requerimientos.</td></tr>`;
+                    return;
+                }
+                requirements.forEach(req => {
+                    const row = document.createElement('tr');
+                    row.dataset.reqId = req.ID_REQ;
+                    row.innerHTML = `
+                        <td>${req.ID_REQ || ''}</td>
+                        <td>${req.nombre || ''}</td>
+                        <td>${req.area || ''}</td>
+                        <td>${req.tipo_servicio || ''}</td>
+                        <td>${req.estado || ''}</td>
+                        <td>${req.fecha_creacion || ''}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
 
+            function showDetails(reqId) {
+                const req = requirementsData.find(r => r.ID_REQ === reqId);
+                if (!req) return;
+
+                modalBody.innerHTML = `
+                    <p><strong>ID:</strong> ${req.ID_REQ}</p>
+                    <p><strong>Ticket:</strong> ${req.ticket}</p>
+                    <p><strong>Nombre:</strong> ${req.nombre}</p>
+                    <p><strong>Celular:</strong> ${req.celular}</p>
+                    <p><strong>Área:</strong> ${req.area}</p>
+                    <p><strong>Tipo de Servicio:</strong> ${req.tipo_servicio}</p>
+                    <p><strong>Fecha Sugerida:</strong> ${req.fecha_sugerida}</p>
+                    <p><strong>Hora Sugerida:</strong> ${req.hora_sugerida}</p>
+                    <p><strong>Detalle:</strong> ${req.detalle}</p>
+                    <p><strong>Restricciones:</strong> ${req.restricciones}</p>
+                    <p><strong>Nivel de Servicio:</strong> ${req.nivel_servicio}</p>
+                    <p><strong>Fecha de Creación:</strong> ${req.fecha_creacion}</p>
+                    <p><strong>Estado:</strong> ${req.estado}</p>
+                    <p><strong>Nueva Fecha Propuesta:</strong> ${req.nuevaFechaPropuesta || 'N/A'}</p>
+                    <p><strong>Tipo de Precio:</strong> ${req.tipoPrecio || 'N/A'}</p>
+                    <p><strong>Precio Final:</strong> ${req['PRECIO FINAL'] || 'N/A'}</p>
+                    <p><strong>Fecha de Cierre:</strong> ${req['FECHA CIERRE'] || 'N/A'}</p>
+                \`;
+                modal.style.display = 'block';
+            }
+
+            tableBody.addEventListener('click', (event) => {
+                const row = event.target.closest('tr');
+                if (row && row.dataset.reqId) {
+                    showDetails(row.dataset.reqId);
+                }
+            });
+
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            fetchRequirements();
+        });
+    </script>
 </body>
 </html>
