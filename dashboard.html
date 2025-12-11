@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Requerimientos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        #addButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tbody tr {
+            cursor: pointer;
+        }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dashboard de Requerimientos</h1>
+    <a href="form.html" id="addButton">Añadir Requerimiento</a>
+
+    <table id="reqTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Área</th>
+                <th>Tipo de Servicio</th>
+                <th>Estado</th>
+                <th>Fecha de Creación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+    <div id="loading">Cargando requerimientos...</div>
+
+    <!-- The Modal -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Detalles del Requerimiento</h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const webhookUrl = 'https://service.computeksa.com/webhook/req';
+            const tableBody = document.querySelector('#reqTable tbody');
+            const loadingIndicator = document.getElementById('loading');
+            const modal = document.getElementById('detailsModal');
+            const modalBody = document.getElementById('modal-body');
+            const closeModal = document.querySelector('.close');
+
+            let requirementsData = [];
+
+            async function fetchRequirements() {
+                try {
+                    const response = await fetch(webhookUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    requirementsData = await response.json();
+                    displayRequirements(requirementsData);
+                } catch (error) {
+                    console.error('Error fetching requirements:', error);
+                    tableBody.innerHTML = `<tr><td colspan="6">Error al cargar los datos. Por favor, intente más tarde.</td></tr>`;
+                } finally {
+                    loadingIndicator.style.display = 'none';
+                }
+            }
+
+            function displayRequirements(requirements) {
+                tableBody.innerHTML = '';
+                if (requirements.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6">No se encontraron requerimientos.</td></tr>`;
+                    return;
+                }
+                requirements.forEach(req => {
+                    const row = document.createElement('tr');
+                    row.dataset.reqId = req.ID_REQ;
+                    row.innerHTML = `
+                        <td>${req.ID_REQ || ''}</td>
+                        <td>${req.nombre || ''}</td>
+                        <td>${req.area || ''}</td>
+                        <td>${req.tipo_servicio || ''}</td>
+                        <td>${req.estado || ''}</td>
+                        <td>${req.fecha_creacion || ''}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            function showDetails(reqId) {
+                const req = requirementsData.find(r => r.ID_REQ === reqId);
+                if (!req) return;
+
+                modalBody.innerHTML = `
+                    <p><strong>ID:</strong> ${req.ID_REQ}</p>
+                    <p><strong>Ticket:</strong> ${req.ticket}</p>
+                    <p><strong>Nombre:</strong> ${req.nombre}</p>
+                    <p><strong>Celular:</strong> ${req.celular}</p>
+                    <p><strong>Área:</strong> ${req.area}</p>
+                    <p><strong>Tipo de Servicio:</strong> ${req.tipo_servicio}</p>
+                    <p><strong>Fecha Sugerida:</strong> ${req.fecha_sugerida}</p>
+                    <p><strong>Hora Sugerida:</strong> ${req.hora_sugerida}</p>
+                    <p><strong>Detalle:</strong> ${req.detalle}</p>
+                    <p><strong>Restricciones:</strong> ${req.restricciones}</p>
+                    <p><strong>Nivel de Servicio:</strong> ${req.nivel_servicio}</p>
+                    <p><strong>Fecha de Creación:</strong> ${req.fecha_creacion}</p>
+                    <p><strong>Estado:</strong> ${req.estado}</p>
+                    <p><strong>Nueva Fecha Propuesta:</strong> ${req.nuevaFechaPropuesta || 'N/A'}</p>
+                    <p><strong>Tipo de Precio:</strong> ${req.tipoPrecio || 'N/A'}</p>
+                    <p><strong>Precio Final:</strong> ${req['PRECIO FINAL'] || 'N/A'}</p>
+                    <p><strong>Fecha de Cierre:</strong> ${req['FECHA CIERRE'] || 'N/A'}</p>
+                `;
+                modal.style.display = 'block';
+            }
+
+            tableBody.addEventListener('click', (event) => {
+                const row = event.target.closest('tr');
+                if (row && row.dataset.reqId) {
+                    showDetails(row.dataset.reqId);
+                }
+            });
+
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            fetchRequirements();
+        });
+    </script>
+</body>
+</html>
