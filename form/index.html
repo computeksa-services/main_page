@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Servicio - Cableado Estructurado</title>
+    <title>Formulario de Contacto - Computeksa</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --primary-color: #1E88E5;
             --primary-dark: #1565C0;
             --bg-color: #f4f7f6;
             --text-color: #333;
+            --border-color: #ccc;
+            --success-color: #4CAF50;
+            --error-color: #F44336;
         }
 
         body {
@@ -20,316 +22,189 @@
             background-color: var(--bg-color);
             margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: white;
-            padding: 0;
+        .form-container {
+            background-color: #fff;
+            padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        /* Estilos del Logo */
-        .logo-container {
-            background-color: white;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .logo-container img {
-            max-width: 100%; /* Para que no se salga en celulares */
-            width: 300px;    /* Tamaño controlado y estético */
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .banner {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             width: 100%;
-            background: linear-gradient(90deg, #1565C0, #1E88E5);
-            color: white;
-            padding: 25px;
+            max-width: 500px;
+        }
+
+        .form-header {
             text-align: center;
-            box-sizing: border-box;
+            margin-bottom: 30px;
         }
-
-        .banner h2 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .banner p {
-            margin-top: 5px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 24px;
-        }
-
-        p.subtitle {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .form-group {
+        
+        .form-header img {
+            width: 150px;
             margin-bottom: 15px;
         }
 
-        label {
+        .form-header h1 {
+            color: var(--primary-dark);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
-            font-size: 14px;
-            color: #444;
+            color: #555;
         }
 
-        input, select, textarea {
+        .input-group input,
+        .input-group textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            border: 1px solid var(--border-color);
             border-radius: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
+            font-size: 1rem;
+            box-sizing: border-box; /* Important for padding */
         }
-
-        textarea {
+        
+        .input-group textarea {
             resize: vertical;
+            min-height: 120px;
         }
 
-        .form-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        button {
+        .submit-btn {
             width: 100%;
             padding: 15px;
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin-top: 20px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        button:hover {
-            background-color: var(--primary-dark);
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
-
-        button:disabled {
-            background-color: #ccc;
+        
+        .submit-btn:disabled {
+            background: #ccc;
             cursor: not-allowed;
         }
-
-        .footer-note {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 13px;
-            color: #555;
-            opacity: 0.85;
-        }
-
-        .hidden { display: none; }
         
-        #successMessage {
+        #form-message {
             text-align: center;
-            padding: 40px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        #form-message.success {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            display: block;
+        }
+        
+        #form-message.error {
+            background-color: #ffebee;
+            color: var(--error-color);
+            display: block;
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-
-    <!-- LOGO AÑADIDO AQUÍ -->
-    <div class="logo-container">
-        <img src="logo_computeksa_large.png" alt="Logo Computeksa">
-    </div>
-
-    <div class="banner">
-        <h2>Solicitud de Ticket - Cableado Estructurado</h2>
-        <p>Registre su requerimiento técnico.</p>
-    </div>
-
-    <div class="content">
-
-        <form id="serviceForm">
-
-            <div class="form-group">
-                <label>Área Solicitante</label>
-                <input type="text" name="area_solicitante" required placeholder="Ejemplo: Contabilidad, Bodega, TI">
-            </div>
-
-            <div class="form-group">
-                <label>Tipo de Servicio</label>
-                <select name="tipo_servicio" required>
-                    <option value="">Seleccione el tipo de servicio...</option>
-                    <option>Instalación</option>
-                    <option>Reubicación</option>
-                    <option>Certificación</option>
-                    <option>Mantenimiento</option>
-                    <option>Tendido</option>
-                    <option>Etiquetado</option>
-                    <option>Reparación</option>
-                    <option>Arreglo</option>
-                    <option>Configuración</option>
-                    <option>Otro</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Nombre del Contacto</label>
-                <input type="text" name="nombre_contacto" required placeholder="Ejemplo: Juan Pérez">
-            </div>
-
-            <div class="form-group">
-                <label>Móvil del Contacto</label>
-                <input type="tel" name="movil_contacto" required pattern="^09[0-9]{8}$" maxlength="10" placeholder="Ejemplo: 0998765432">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Fecha sugerida para la inspección</label>
-                    <input type="date" name="fecha_sugerida" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Hora sugerida para la inspección</label>
-                    <input type="time" name="hora_sugerida" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Detalle del requerimiento</label>
-                <textarea name="detalle_requerimiento" rows="4" required placeholder="Describa detalladamente el requerimiento o falla..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Restricciones</label>
-                <select name="restricciones" required>
-                    <option value="">Seleccione una restricción...</option>
-                    <option>Horarios permitidos para trabajo</option>
-                    <option>Áreas con restricciones</option>
-                    <option>Protocolo de bioseguridad requeridos</option>
-                    <option>Requisitos adicionales para ingreso del personal técnico</option>
-                    <option>Otro</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Nivel de servicio</label>
-                <select name="nivel_servicio" required>
-                    <option value="">Seleccione el nivel de servicio...</option>
-                    <option>Alta (respuesta 2h, resolución 4h)</option>
-                    <option>Medio (respuesta 8h, resolución 24h)</option>
-                    <option>Bajo (respuesta NBD, resolución 48h)</option>
-                </select>
-            </div>
-
-            <button type="submit" id="btnEnviar">ENVIAR SOLICITUD</button>
-
-            <div class="footer-note">
-                Este formulario se creó en COMPUTEKSA S.A.
-            </div>
-
-        </form>
-
-        <div id="successMessage" class="hidden">
-            <span style="font-size:50px;">✅</span>
-            <h2>¡Solicitud Enviada!</h2>
-            <p>Hemos recibido su requerimiento correctamente.</p>
-            <button onclick="location.reload()" style="background-color:#777; width:auto; padding:10px 20px; margin-top:15px; color:white; border:none; border-radius:5px; cursor:pointer;">Nueva solicitud</button>
+    <div class="form-container">
+        <div class="form-header">
+            <a href="../"><img src="../logo_computeksa_large.png" alt="Computeksa Logo"></a>
+            <h1>Solicitud de Servicio</h1>
         </div>
 
+        <form id="service-form">
+            <div class="input-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="input-group">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
+            <div class="input-group">
+                <label for="celular">Celular</label>
+                <input type="tel" id="celular" name="celular" required>
+            </div>
+            <div class="input-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" name="ciudad" required>
+            </div>
+            <div class="input-group">
+                <label for="detalle">Detalle del Requerimiento</label>
+                <textarea id="detalle" name="detalle" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn" id="submit-button">Enviar Solicitud</button>
+        </form>
+        <div id="form-message"></div>
     </div>
-</div>
 
-<script>
-    // ======================================================
-    // PEGA AQUÍ ABAJO LA URL DE TU WEBHOOK DE N8N
-    // ======================================================
-    const WEBHOOK_URL = 'https://service.computeksa.com/webhook/formulario'; 
-    // ======================================================
+    <script>
+        const form = document.getElementById('service-form');
+        const submitButton = document.getElementById('submit-button');
+        const formMessage = document.getElementById('form-message');
 
-    const form = document.getElementById('serviceForm');
-    const successMsg = document.getElementById('successMessage');
-    const btn = document.getElementById('btnEnviar');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+            formMessage.style.display = 'none';
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita que se envíe solo
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            const webhookUrl = 'https://service.computeksa.com/webhook/formulario-servicio';
 
-        // --- NUEVA CONFIRMACIÓN ---
-        const userConfirmed = confirm("¿Está seguro de que desea enviar la solicitud?");
-        if (!userConfirmed) {
-            return; // Si dice Cancelar, se detiene aquí y no envía nada
-        }
-        // --------------------------
-        
-        // Cambiar botón para mostrar carga
-        btn.textContent = 'Enviando...';
-        btn.disabled = true;
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                // Leemos la respuesta del webhook para asegurar que el proceso terminó.
+                const responseData = await response.json();
 
-        // Capturar los datos
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        
-        // Agregar fecha automática de registro
-        data.fecha_registro = new Date().toLocaleString();
+                if (response.ok) {
+                    // Si el servidor responde OK (status 200-299), mostramos éxito.
+                    formMessage.textContent = '¡Gracias! Hemos recibido tu solicitud correctamente.';
+                    formMessage.className = 'success';
+                    form.reset();
+                } else {
+                    // Si el servidor responde con un error (status 4xx, 5xx)
+                    throw new Error('La respuesta del servidor indica un error.');
+                }
 
-        try {
-            // Enviar a n8n
-            const response = await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (response.ok) {
-                // Si todo salió bien
-                form.classList.add('hidden');
-                successMsg.classList.remove('hidden');
-                window.scrollTo(0,0);
-            } else {
-                throw new Error('Error en la respuesta del servidor');
+            } catch (error) {
+                console.error('Error al enviar el formulario:', error);
+                formMessage.innerHTML = 'Ha ocurrido un error. Por favor, comuníquese a <a href="mailto:soporte@computeksa.com" style="color: var(--error-color);">soporte@computeksa.com</a>.';
+                formMessage.className = 'error';
+            } finally {
+                formMessage.style.display = 'block';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Solicitud';
             }
-
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Hubo un problema al conectar con el servidor. Por favor intente nuevamente.');
-            btn.textContent = 'ENVIAR SOLICITUD';
-            btn.disabled = false;
-        }
-    });
-</script>
-
+        });
+    </script>
 </body>
 </html>
